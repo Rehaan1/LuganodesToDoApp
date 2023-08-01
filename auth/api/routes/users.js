@@ -98,7 +98,7 @@ router.patch('/update', tokenCheck, (req, res) => {
       client.query("BEGIN")
         .then(() => {
           const updateQuery = format(
-            "UPDATE users SET first_name = %L, last_name = %L, address = $L WHERE user_id = %L RETURNING *",
+            "UPDATE users SET first_name = %L, last_name = %L, address = %L WHERE user_id = %L RETURNING *",
             newName,
             newLastName,
             newAddress,
