@@ -19,32 +19,50 @@
 
 ## Tasks
 #### Luganodes Major Requirements
--[ ] Start a Postgress Container using Docker Compose
--[ ] Design Database for Todo
--[ ] Create Basic ToDo Functionality (Microservice)
--[ ] Need to Find the Unique Identifier between various Authentication Methods
--[ ] Design Database for Authentication
--[ ] Create Authentication Mode (Microservice)
--[ ] Create Frontend and Link with Backend
--[ ] Docker Compose Wrap Everything Together
+[ ] Start a Postgress Container using Docker Compose
+
+[ ] Design Database for Todo
+
+[ ] Create Basic ToDo Functionality (Microservice)
+
+[ ] Need to Find the Unique Identifier between various Authentication Methods
+
+[ ] Design Database for Authentication
+
+[ ] Create Authentication Mode (Microservice)
+
+[ ] Create Frontend and Link with Backend
+
+[ ] Docker Compose Wrap Everything Together
 
 #### Luganodes ToDo Requirements
 
--[ ] Add ToDo
--[ ] Remove ToDo
--[ ] List All ToDo
--[ ] Mark ToDo as Complete
+[ ] Add ToDo
+
+[ ] Remove ToDo
+
+[ ] List All ToDo
+
+[ ] Mark ToDo as Complete
 
 #### API Endpoint Requirements:
 
--[ ] Email Authentication Endpoint
--[ ] Web 3 Authentication Endpoint
--[ ] Google OAuth Authentication Endpoint
+[ ] Email Authentication Endpoint
 
--[ ] Add Todo Endpoint
--[ ] Remove ToDo by ID endpoint
--[ ] List All ToDo Endpoint
--[ ] Mark ToDo by ID endpoint
+[ ] Web 3 Authentication Endpoint
 
--[ ] Account Setting/User Detail Change Endpoint
--[ ] Reset Password Email Based Authentication
+[ ] Google OAuth Authentication Endpoint
+
+
+[ ] Add Todo Endpoint
+
+[ ] Remove ToDo by ID endpoint
+
+[ ] List All ToDo Endpoint
+
+[ ] Mark ToDo by ID endpoint
+
+
+[ ] Account Setting/User Detail Change Endpoint
+
+[ ] Reset Password Email Based Authentication
