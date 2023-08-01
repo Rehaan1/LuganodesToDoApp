@@ -17,11 +17,7 @@ const dbUserPool = new Pool({
     database: process.env.POSTGRES_DB,
     max: 20,
     connectionTimeoutMillis: 0,
-    idleTimeoutMillis: 0,
-    ssl: {
-      rejectUnauthorized: false
-      // other SSL/TLS options, if needed
-    }
+    idleTimeoutMillis: 0
   })
   
 module.exports = {
