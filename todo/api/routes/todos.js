@@ -16,7 +16,7 @@ router.get('/', (req,res) =>{
     }
 
     //@TODO: Get from JWT Token
-    const userId = req.params.userId
+    const userId = req.body.userId
 
     dbUserPool.connect()
     .then(client => {
