@@ -4,19 +4,13 @@ const express = require('express')
 const router = express.Router()
 const format = require('pg-format')
 const { dbUserPool } = require('../db/db')
+const tokenCheck = require('../middlewares/tokenCheck')
 
 
-router.get('/', (req,res) =>{
+
+router.get('/', tokenCheck, (req,res) =>{
     
-    if(!req.body.userId)
-    {
-        return res.status(400).json({
-            message:"Missing Required Body Content"
-        })
-    }
-
-    //@TODO: Get from JWT Token
-    const userId = req.body.userId
+    const userId = req.userId
 
     dbUserPool.connect()
     .then(client => {
@@ -67,14 +61,7 @@ router.get('/', (req,res) =>{
     
 })
 
-router.post('/add',(req,res)=>{
-
-    if(!req.body.userId)
-    {
-        return res.status(400).json({
-            message:"Missing Required Body Content"
-        })
-    }
+router.post('/add', tokenCheck,(req,res)=>{
 
     if(!req.body.task)
     {
@@ -83,8 +70,7 @@ router.post('/add',(req,res)=>{
         })
     }
 
-    // @TODO: Get From JWT Token
-    const userId = req.body.userId
+    const userId = req.userId
 
     const task = req.body.task
 
@@ -141,13 +127,7 @@ router.post('/add',(req,res)=>{
 })
 
 
-router.delete('/remove', (req, res) => {
-
-    if (!req.body.userId) {
-        return res.status(400).json({
-            message: "Missing Required Body Content"
-        })
-    }
+router.delete('/remove',tokenCheck, (req, res) => {
 
     if (!req.body.taskId) {
         return res.status(400).json({
@@ -155,8 +135,7 @@ router.delete('/remove', (req, res) => {
         })
     }
 
-    // @TODO: Get From JWT Token
-    const userId = req.body.userId
+    const userId = req.userId
 
     const taskId = req.body.taskId
 
@@ -215,7 +194,7 @@ router.delete('/remove', (req, res) => {
 })
 
 
-router.patch('/update/mark', (req, res) => {
+router.patch('/update/mark', tokenCheck, (req, res) => {
     
     if (!req.body.taskId) {
         return res.status(400).json({
@@ -223,14 +202,7 @@ router.patch('/update/mark', (req, res) => {
         })
     }
 
-    if (!req.body.userId) {
-        return res.status(400).json({
-            message: "Missing Required Body Content"
-        })
-    }
-
-    // @TODO: Get from JWT Token
-    const userId = req.body.userId
+    const userId = req.userId
 
     const taskId = req.body.taskId
 
@@ -288,7 +260,7 @@ router.patch('/update/mark', (req, res) => {
         })
 })
 
-router.patch('/update/task', (req, res) => {
+router.patch('/update/task', tokenCheck, (req, res) => {
     
     if (!req.body.task) {
         return res.status(400).json({
@@ -301,15 +273,8 @@ router.patch('/update/task', (req, res) => {
             message: "Missing Required Body Content"
         })
     }
-
-    if (!req.body.userId) {
-        return res.status(400).json({
-            message: "Missing Required Body Content"
-        })
-    }
-
-    // @TODO: Get from JWT Token
-    const userId = req.body.userId
+    
+    const userId = req.userId
 
     const taskId = req.body.taskId
     const updatedTask = req.body.task
