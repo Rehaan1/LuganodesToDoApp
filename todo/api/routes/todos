@@ -2,12 +2,36 @@ require('dotenv').config()
 
 const express = require('express')
 const router = express.Router()
+const format = require('pg-format')
+const { dbUserPool } = require('../db/db')
 
 router.get('/', (req,res) =>{
     
-    return res.status(200).json({
-        message: "Hola TODO Endpoint!"
-    })
+    dbUserPool.connect()
+        .then(client => {
+            client.query('BEGIN')
+            .then(()=>{
+                const query = "SELECT * FROM todo"
+                client.query(query)
+                    .then(result =>{
+
+                        client.query('COMMIT')
+
+                        return res.status(200).json({
+                            message: "Database Connection Working"
+                        })
+                    })
+            })
+        }).catch(err => {
+            client.query('ROLLBACK')
+
+            return res.status(200).json({
+                message: "Database Error",
+                error: err
+            })
+        })
+
+    
 })
 
 module.exports = router
