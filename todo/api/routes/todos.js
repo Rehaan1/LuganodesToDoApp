@@ -292,7 +292,7 @@ router.patch('/update/mark', (req, res) => {
         })
 })
 
-router.post('/update/task', (req, res) => {
+router.patch('/update/task', (req, res) => {
     
     if (!req.body.task) {
         return res.status(400).json({
