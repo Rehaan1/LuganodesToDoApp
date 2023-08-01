@@ -37,11 +37,11 @@
 
 #### Luganodes ToDo Requirements
 
-[ ] Add ToDo
+[X] Add ToDo
 
-[ ] Remove ToDo
+[X] Remove ToDo
 
-[ ] List All ToDo
+[X] List All ToDo
 
 [ ] Mark ToDo as Complete
 

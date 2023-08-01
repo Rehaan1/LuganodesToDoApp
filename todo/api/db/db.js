@@ -7,8 +7,9 @@ const { Pool } = require('pg')
 // proper security measures
 
 // Admin User with no permission Restriction
-// Note: In the following code TLS and SSL is disabled
-// @TODO - Enable in PRODUCTION TLS/SSL
+
+// Connection Pooling used to reduce time taken 3 way handshake
+// and other overheads when connecting with database
 const dbUserPool = new Pool({
     host: process.env.POSTGRES_HOST,
     port: process.env.POSTGRES_PORT,
