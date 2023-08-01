@@ -14,6 +14,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  todo:
+    image: luganodesTodo/todo-service
+    environment:
+      - PORT=3001
     
 volumes:
   postgres_data:
