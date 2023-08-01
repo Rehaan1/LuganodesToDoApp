@@ -1,4 +1,4 @@
-# Luganodes Web3 Authenticated ToDo System
+# Luganodes Web3 Authenticated Todo System
 
 ## Steps to Start System
 1. TODO
@@ -37,15 +37,15 @@
 
 #### Luganodes ToDo Requirements
 
-[X] Add ToDo
+[X] Add Todo
 
-[X] Remove ToDo
+[X] Remove Todo
 
-[X] List All ToDo
+[X] List All Todo
 
-[X] Mark ToDo as Complete
+[X] Mark Todo as Complete
 
-[X] Update ToDo
+[X] Update Todo
 
 #### API Endpoint Requirements:
 
@@ -56,13 +56,15 @@
 [ ] Google OAuth Authentication Endpoint
 
 
-[ ] Add Todo Endpoint
+[X] Add Todo Endpoint
 
-[ ] Remove ToDo by ID endpoint
+[X] Remove Todo by ID endpoint
 
-[ ] List All ToDo Endpoint
+[X] List All Todo Endpoint
 
-[ ] Mark ToDo by ID endpoint
+[X] Mark Todo by ID endpoint
+
+[X] Update Todo by ID
 
 
 [ ] Account Setting/User Detail Change Endpoint
