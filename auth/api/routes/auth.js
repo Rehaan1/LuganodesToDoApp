@@ -80,7 +80,7 @@ router.post('/email/register',(req,res) => {
                             })
                         }
                         
-                        const salt = bcrypt.genSaltSync(process.env.SALT)
+                        const salt = bcrypt.genSaltSync(10)
                         const passwordHash = bcrypt.hashSync(req.body.password, salt)
                         
                         const insertQuery = format(
