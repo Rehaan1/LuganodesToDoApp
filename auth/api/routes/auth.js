@@ -233,4 +233,110 @@ router.post('/email/login', (req, res) => {
       })
   })
 
+
+  router.post('/metaMask/login',(req,res) => {
+
+    if(!req.body.wallet_address)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    const wallet_address = req.body.wallet_address
+
+    dbUserPool.connect()
+    .then(client => {
+        client.query("BEGIN")
+            .then(() => {
+
+                const query = format(
+                    "SELECT * FROM users WHERE wallet_address = %L",
+                    wallet_address
+                )
+
+                client.query(query)
+                    .then(result => {
+
+                        if (result.rows.length > 0) {
+                            
+                            const token = jwt.sign(
+                                { userId: result.rows[0].user_id},
+                                process.env.JWT_SECRET,
+                                { expiresIn: process.env.JWT_EXPIRY }
+                              )
+                
+                              client.release()
+                              return res.status(200).json({
+                                message: "Login successful",
+                                token: token
+                              })
+                        }
+                        
+                        
+                        const insertQuery = format(
+                            "INSERT INTO users (wallet_address) VALUES (%L) RETURNING *",
+                            wallet_address
+                        )
+
+                        client.query(insertQuery)
+                            .then(insertResult => {
+                                
+                                client.query("COMMIT")
+
+                                const token = jwt.sign(
+                                    { userId: insertResult.rows[0].user_id},
+                                    process.env.JWT_SECRET,
+                                    { expiresIn: process.env.JWT_EXPIRY }
+                                  )
+                    
+                                  client.release()
+                                  return res.status(200).json({
+                                    message: "Login successful",
+                                    token: token
+                                  })
+                                  
+                            }).catch(err => {
+                                client.query("ROLLBACK")
+                                client.release()
+                                
+                                console.log("Error: ", err)
+                                return res.status(500).json({
+                                    message: "Error Adding User",
+                                    error: err
+                                })
+                            })
+                        
+                    })
+                    .catch(err => {
+                        client.query("ROLLBACK")
+                        client.release()
+
+                        console.log("Error: ", err)
+                        return res.status(500).json({
+                            message: "Query error",
+                            error: err
+                        })
+                    })
+            })
+            .catch(err => {
+                console.log("Error: ", err)
+                client.release()
+
+                return res.status(500).json({
+                    message: "Database transaction error",
+                    error: err
+                })
+            })
+    })
+    .catch(err => {
+        console.log(err)
+        return res.status(200).json({
+            message: "Database Connection Error",
+            error: err
+        })
+    })
+
+})
+
 module.exports = router
