@@ -84,7 +84,7 @@ router.post('/email/register',(req,res) => {
                         const passwordHash = bcrypt.hashSync(req.body.password, salt)
                         
                         const insertQuery = format(
-                            "INSERT INTO users (email, password, wallet_address, first_name, last_name, address) VALUES (%L, %L, %L, %L) RETURNING *",
+                            "INSERT INTO users (email, password, wallet_address, first_name, last_name, address) VALUES (%L, %L, %L, %L, %L, %L) RETURNING *",
                             email,
                             passwordHash,
                             req.body.wallet_address || null,
