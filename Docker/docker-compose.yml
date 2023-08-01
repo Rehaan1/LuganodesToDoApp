@@ -17,6 +17,8 @@ services:
 
   todo:
     image: luganodestodo/todo-service
+    env_file:
+      - ./todo.env.list
     environment:
       - PORT=3001
     ports:

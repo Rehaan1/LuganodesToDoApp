@@ -45,6 +45,8 @@
 
 [ ] Mark ToDo as Complete
 
+[ ] Update ToDo
+
 #### API Endpoint Requirements:
 
 [ ] Email Authentication Endpoint
