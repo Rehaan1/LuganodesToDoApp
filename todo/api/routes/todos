@@ -9,34 +9,35 @@ router.get('/', (req,res) =>{
     
     dbUserPool.connect()
         .then(client => {
-            client.query('BEGIN')
+            client.query("BEGIN")
             .then(()=>{
                 const query = "SELECT * FROM todo"
                 client.query(query)
                     .then(result =>{
 
-                        client.query('COMMIT')
+                        client.query("COMMIT")
 
                         return res.status(200).json({
-                            message: "Database Connection Working"
+                            message: "Database Connection Working",
+                            data: result.rowCount
                         })
                     })
                     .catch(err => {
-                        client.query('ROLLBACK')
+                        client.query("ROLLBACK")
                         
-                        console.log('Error: ', err)
+                        console.log("Error: ", err)
                         
                         return res.status(500).json({
-                            message: 'query error',
+                            message: "Query error",
                             error:err
                           })
                     })
             })
             .catch(err => {
-                console.log('Error: ', err)
+                console.log("Error: ", err)
                 
                 return res.status(500).json({
-                    message: 'database transaction error',
+                    message: "Database transaction error",
                     error:err
                 })
 
@@ -47,7 +48,7 @@ router.get('/', (req,res) =>{
         }).catch(err => {
 
             console.log(err)
-            
+
             return res.status(200).json({
                 message: "Database Connection Error",
                 error: err
@@ -55,6 +56,81 @@ router.get('/', (req,res) =>{
         })
 
     
+})
+
+router.post('/add',(req,res)=>{
+
+    if(!req.body.userId)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    if(!req.body.task)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    // @TODO: Get From JWT Token
+    const userId = req.body.userId
+    
+    const task = req.body.task
+
+    dbUserPool.connect()
+        .then(client => {
+            client.query("BEGIN")
+            .then(()=>{
+
+                const query = format(
+                    "INSERT INTO todo (user_id, task) VALUES (%L, %L) RETURNING *",
+                    userId, task
+                )
+
+                client.query(query)
+                    .then(result =>{
+
+                        client.query("COMMIT")
+
+                        return res.status(200).json({
+                            message: "Data Inserted Successfully"
+                        })
+                    })
+                    .catch(err => {
+                        client.query("ROLLBACK")
+                        
+                        console.log("Error: ", err)
+                        
+                        return res.status(500).json({
+                            message: "Query error",
+                            error:err
+                          })
+                    })
+
+            })
+            .catch(err => {
+                console.log("Error: ", err)
+                
+                return res.status(500).json({
+                    message: "Database transaction error",
+                    error:err
+                })
+
+            }).finally(() => {
+                client.release()
+            })
+        })
+        .catch(err => {
+
+            console.log(err)
+
+            return res.status(200).json({
+                message: "Database Connection Error",
+                error: err
+            })
+        })
 })
 
 module.exports = router
