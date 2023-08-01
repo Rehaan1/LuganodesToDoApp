@@ -15,7 +15,7 @@ router.get('/', tokenCheck, (req,res) => {
             .then(() => {
 
                 const query = format(
-                    "SELECT firs_name, last_name, address, email, wallet_address FROM users WHERE user_id = %L",
+                    "SELECT first_name, last_name, address, email, wallet_address FROM users WHERE user_id = %L",
                     req.userId
                 )
 
