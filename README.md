@@ -25,7 +25,7 @@
 
 [X] Create Basic ToDo Functionality (Microservice)
 
-[ ] Need to Find the Unique Identifier between various Authentication Methods
+[X] Need to Find the Unique Identifier between various Authentication Methods
 
 [ ] Design Database for Authentication
 

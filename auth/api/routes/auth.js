@@ -1,8 +1,10 @@
 require('dotenv').config()
+
 const express = require('express')
 const router = express.Router()
 const { dbUserPool } = require('../db/db')
 const format = require('pg-format')
+const bcrypt = require('bcryptjs')
 
 const jwt = require('jsonwebtoken')
 
@@ -10,6 +12,121 @@ router.get('/',(req,res) => {
     return res.status(200).json({
         message:"You are in user endpoint"
     })
+})
+
+router.post('/email/register',(req,res) => {
+
+    if(!req.body.email)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    if(!req.body.password)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    if(!req.body.name)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    
+
+    const email = req.body.email
+    const name = req.body.name
+
+    dbUserPool.connect()
+    .then(client => {
+        client.query("BEGIN")
+            .then(() => {
+
+                const query = format(
+                    "SELECT * FROM todo WHERE email = %L",
+                    email
+                )
+
+                client.query(query)
+                    .then(result => {
+
+                        if (result.rows.length > 0) {
+                            client.query("COMMIT")
+                            
+                            client.release()
+
+                            return res.status(409).json({
+                              message: "Email already exists"
+                            })
+                        }
+                        
+                        const salt = bcrypt.genSaltSync(process.env.SALT)
+                        const passwordHash = bcrypt.hashSync(req.body.password, salt)
+                        
+                        const insertQuery = format(
+                            "INSERT INTO users (email, password, name, wallet_address) VALUES (%L, %L, %L, %L) RETURNING *",
+                            email,
+                            passwordHash,
+                            name,
+                            req.body.wallet_address || null
+                        )
+
+                        client.query(insertQuery)
+                            .then(insertResult => {
+                                client.query("COMMIT")
+                                client.release()
+
+                                return res.status(200).json({
+                                    message: "User added successfully",
+                                    data: insertResult.rows[0]
+                                  })
+                            }).catch(err => {
+                                client.query("ROLLBACK")
+                                client.release()
+                                
+                                console.log("Error: ", err)
+                                return res.status(500).json({
+                                    message: "Error Adding User",
+                                    error: err
+                                })
+                            })
+                        
+                    })
+                    .catch(err => {
+                        client.query("ROLLBACK")
+                        client.release()
+
+                        console.log("Error: ", err)
+                        return res.status(500).json({
+                            message: "Query error",
+                            error: err
+                        })
+                    })
+            })
+            .catch(err => {
+                console.log("Error: ", err)
+                client.release()
+
+                return res.status(500).json({
+                    message: "Database transaction error",
+                    error: err
+                })
+            })
+    })
+    .catch(err => {
+        console.log(err)
+        return res.status(200).json({
+            message: "Database Connection Error",
+            error: err
+        })
+    })
+
+    
 })
 
 module.exports = router

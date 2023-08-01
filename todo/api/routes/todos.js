@@ -31,6 +31,7 @@ router.get('/', (req,res) =>{
                 client.query(query)
                     .then(result => {
                         client.query("COMMIT")
+                        client.release()
 
                         return res.status(200).json({
                             message: "Todos Retrieved Successfully",
@@ -40,6 +41,7 @@ router.get('/', (req,res) =>{
                     .catch(err => {
                         client.query("ROLLBACK")
                         console.log("Error: ", err)
+                        client.release()
                         return res.status(500).json({
                             message: "Query error",
                             error: err
@@ -48,13 +50,11 @@ router.get('/', (req,res) =>{
             })
             .catch(err => {
                 console.log("Error: ", err)
+                client.release()
                 return res.status(500).json({
                     message: "Database transaction error",
                     error: err
                 })
-            })
-            .finally(() => {
-                client.release()
             })
     })
     .catch(err => {
@@ -102,14 +102,14 @@ router.post('/add',(req,res)=>{
                     .then(result =>{
 
                         client.query("COMMIT")
-
+                        client.release()
                         return res.status(200).json({
                             message: "Data Inserted Successfully"
                         })
                     })
                     .catch(err => {
                         client.query("ROLLBACK")
-                        
+                        client.release()
                         console.log("Error: ", err)
                         
                         return res.status(500).json({
@@ -121,14 +121,12 @@ router.post('/add',(req,res)=>{
             })
             .catch(err => {
                 console.log("Error: ", err)
-                
+                client.release()
                 return res.status(500).json({
                     message: "Database transaction error",
                     error:err
                 })
 
-            }).finally(() => {
-                client.release()
             })
         })
         .catch(err => {
@@ -175,7 +173,7 @@ router.delete('/remove', (req, res) => {
                     client.query(query)
                         .then(result => {
                             client.query("COMMIT")
-
+                            client.release()
                             if (result.rowCount === 0) {
                                 
                                 return res.status(404).json({
@@ -190,6 +188,7 @@ router.delete('/remove', (req, res) => {
                         })
                         .catch(err => {
                             client.query("ROLLBACK")
+                            client.release()
                             console.log("Error: ", err)
                             return res.status(500).json({
                                 message: "Query error",
@@ -199,13 +198,11 @@ router.delete('/remove', (req, res) => {
                 })
                 .catch(err => {
                     console.log("Error: ", err)
+                    client.release()
                     return res.status(500).json({
                         message: "Database transaction error",
                         error: err
                     })
-                })
-                .finally(() => {
-                    client.release()
                 })
         })
         .catch(err => {
@@ -250,7 +247,7 @@ router.patch('/update/mark', (req, res) => {
                     client.query(query)
                         .then(result => {
                             client.query("COMMIT")
-
+                            client.release()
                             if (result.rowCount === 0) {
                                 
                                 return res.status(404).json({
@@ -265,6 +262,7 @@ router.patch('/update/mark', (req, res) => {
                         })
                         .catch(err => {
                             client.query("ROLLBACK")
+                            client.release()
                             console.log("Error: ", err)
                             return res.status(500).json({
                                 message: "Query error",
@@ -274,13 +272,11 @@ router.patch('/update/mark', (req, res) => {
                 })
                 .catch(err => {
                     console.log("Error: ", err)
+                    client.release()
                     return res.status(500).json({
                         message: "Database transaction error",
                         error: err
                     })
-                })
-                .finally(() => {
-                    client.release()
                 })
         })
         .catch(err => {
@@ -331,7 +327,7 @@ router.patch('/update/task', (req, res) => {
                     client.query(query)
                         .then(result => {
                             client.query("COMMIT")
-
+                            client.release()
                             if (result.rowCount === 0) {
                                 
                                 return res.status(404).json({
@@ -346,6 +342,7 @@ router.patch('/update/task', (req, res) => {
                         })
                         .catch(err => {
                             client.query("ROLLBACK")
+                            client.release()
                             console.log("Error: ", err)
                             return res.status(500).json({
                                 message: "Query error",
@@ -355,13 +352,11 @@ router.patch('/update/task', (req, res) => {
                 })
                 .catch(err => {
                     console.log("Error: ", err)
+                    client.release()
                     return res.status(500).json({
                         message: "Database transaction error",
                         error: err
                     })
-                })
-                .finally(() => {
-                    client.release()
                 })
         })
         .catch(err => {
