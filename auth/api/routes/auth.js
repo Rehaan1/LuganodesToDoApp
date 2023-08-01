@@ -56,7 +56,6 @@ router.post('/email/register',(req,res) => {
                     .then(result => {
 
                         if (result.rows.length > 0) {
-                            client.query("COMMIT")
                             
                             client.release()
 
@@ -82,8 +81,7 @@ router.post('/email/register',(req,res) => {
                                 client.release()
 
                                 return res.status(200).json({
-                                    message: "User added successfully",
-                                    data: insertResult.rows[0]
+                                    message: "User added successfully"
                                   })
                             }).catch(err => {
                                 client.query("ROLLBACK")
@@ -126,7 +124,95 @@ router.post('/email/register',(req,res) => {
         })
     })
 
-    
 })
+
+
+router.post('/email/login', (req, res) => {
+    
+    if ( !req.body.password) {
+      return res.status(400).json({
+        message: "Missing Required Body Content"
+      })
+    }
+
+    if ( !req.body.email) {
+        return res.status(400).json({
+          message: "Missing Required Body Content"
+        })
+      }
+  
+    const email = req.body.email
+  
+    dbUserPool.connect()
+      .then(client => {
+        client.query("BEGIN")
+          .then(() => {
+            const query = format(
+              "SELECT * FROM users WHERE email = %L",
+              email
+            )
+  
+            client.query(query)
+              .then(result => {
+                
+                if (result.rows.length === 0) {
+                  client.release()
+
+                  return res.status(401).json({
+                    message: "Email or password is incorrect"
+                  })
+                }
+  
+                const user = result.rows[0]
+                const passwordMatch = bcrypt.compareSync(req.body.password, user.password)
+  
+                if (!passwordMatch) {
+                  client.release()
+
+                  return res.status(401).json({
+                    message: "Email or password is incorrect"
+                  })
+                }
+  
+                
+                const token = jwt.sign(
+                  { userId: user.user_id, email: user.email },
+                  process.env.JWT_SECRET,
+                  { expiresIn: process.env.JWT_EXPIRY }
+                )
+  
+                client.release()
+                return res.status(200).json({
+                  message: "Login successful",
+                  token: token
+                })
+              })
+              .catch(err => {
+                client.query("ROLLBACK")
+                client.release()
+                console.log("Error: ", err)
+                return res.status(500).json({
+                  message: "Query error",
+                  error: err
+                })
+              })
+          })
+          .catch(err => {
+            console.log("Error: ", err)
+            client.release()
+            return res.status(500).json({
+              message: "Database transaction error",
+              error: err
+            })
+          })
+      })
+      .catch(err => {
+        console.log(err)
+        return res.status(500).json({
+          message: "Database Connection Error",
+          error: err
+        })
+      })
+  })
 
 module.exports = router
