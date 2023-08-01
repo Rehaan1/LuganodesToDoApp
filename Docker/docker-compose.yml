@@ -16,7 +16,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   todo:
-    image: luganodesTodo/todo-service
+    image: luganodestodo/todo-service
     environment:
       - PORT=3001
     
