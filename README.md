@@ -19,9 +19,9 @@
 
 ## Tasks
 #### Luganodes Major Requirements
-[ ] Start a Postgress Container using Docker Compose
+[X] Start a Postgress Container using Docker Compose
 
-[ ] Design Database for Todo
+[X] Design Database for Todo
 
 [ ] Create Basic ToDo Functionality (Microservice)
 
