@@ -21,12 +21,32 @@ router.get('/', (req,res) =>{
                             message: "Database Connection Working"
                         })
                     })
+                    .catch(err => {
+                        client.query('ROLLBACK')
+                        
+                        console.log('Error: ', err)
+                        
+                        return res.status(500).json({
+                            message: 'query error',
+                            error:err
+                          })
+                    })
             })
-        }).catch(err => {
-            client.query('ROLLBACK')
+            .catch(err => {
+                console.log('Error: ', err)
+                
+                return res.status(500).json({
+                    message: 'database transaction error',
+                    error:err
+                })
 
+            }).finally(() => {
+                client.release()
+            })
+
+        }).catch(err => {
             return res.status(200).json({
-                message: "Database Error",
+                message: "Database Connection Error",
                 error: err
             })
         })
