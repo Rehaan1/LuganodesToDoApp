@@ -23,7 +23,7 @@
 
 [X] Design Database for Todo
 
-[ ] Create Basic ToDo Functionality (Microservice)
+[X] Create Basic ToDo Functionality (Microservice)
 
 [ ] Need to Find the Unique Identifier between various Authentication Methods
 
@@ -43,9 +43,9 @@
 
 [X] List All ToDo
 
-[ ] Mark ToDo as Complete
+[X] Mark ToDo as Complete
 
-[ ] Update ToDo
+[X] Update ToDo
 
 #### API Endpoint Requirements:
 
