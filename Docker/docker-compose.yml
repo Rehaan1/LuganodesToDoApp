@@ -23,6 +23,15 @@ services:
       - PORT=3001
     ports:
       - "3001:3001"
+
+  auth:
+    image: luganodestodo/auth-service
+    env_file:
+      - ./auth.env.list
+    environment:
+      - PORT=4001
+    ports:
+      - "4001:4001"
     
 volumes:
   postgres_data:
