@@ -15,7 +15,7 @@ router.get('/', tokenCheck, (req,res) => {
             .then(() => {
 
                 const query = format(
-                    "SELECT name, email, wallet_address FROM users WHERE user_id = %L",
+                    "SELECT firs_name, last_name, address, email, wallet_address FROM users WHERE user_id = %L",
                     req.userId
                 )
 
@@ -70,13 +70,27 @@ router.get('/', tokenCheck, (req,res) => {
 
 router.patch('/update', tokenCheck, (req, res) => {
 
-  if (!req.body.name) {
+  if (!req.body.first_name) {
     return res.status(400).json({
       message: "Missing Required Body Content"
     })
   }
 
-  const newName = req.body.name
+  if (!req.body.last_name) {
+    return res.status(400).json({
+      message: "Missing Required Body Content"
+    })
+  }
+
+  if (!req.body.address_name) {
+    return res.status(400).json({
+      message: "Missing Required Body Content"
+    })
+  }
+
+  const newName = req.body.first_name
+  const newLastName = req.body.last_name
+  const newAddress = req.body.address
   const userId = req.userId
 
   dbUserPool.connect()
@@ -84,8 +98,10 @@ router.patch('/update', tokenCheck, (req, res) => {
       client.query("BEGIN")
         .then(() => {
           const updateQuery = format(
-            "UPDATE users SET name = %L WHERE user_id = %L RETURNING *",
+            "UPDATE users SET first_name = %L, last_name = %L, address = $L WHERE user_id = %L RETURNING *",
             newName,
+            newLastName,
+            newAddress,
             userId
           )
 

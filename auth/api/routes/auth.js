@@ -30,7 +30,21 @@ router.post('/email/register',(req,res) => {
         })
     }
 
-    if(!req.body.name)
+    if(!req.body.first_name)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    if(!req.body.last_name)
+    {
+        return res.status(400).json({
+            message:"Missing Required Body Content"
+        })
+    }
+
+    if(!req.body.address)
     {
         return res.status(400).json({
             message:"Missing Required Body Content"
@@ -40,7 +54,9 @@ router.post('/email/register',(req,res) => {
     
 
     const email = req.body.email
-    const name = req.body.name
+    const first_name = req.body.first_name
+    const last_name = req.body.last_name
+    const address = req.body.address
 
     dbUserPool.connect()
     .then(client => {
@@ -68,11 +84,13 @@ router.post('/email/register',(req,res) => {
                         const passwordHash = bcrypt.hashSync(req.body.password, salt)
                         
                         const insertQuery = format(
-                            "INSERT INTO users (email, password, name, wallet_address) VALUES (%L, %L, %L, %L) RETURNING *",
+                            "INSERT INTO users (email, password, wallet_address, first_name, last_name, address) VALUES (%L, %L, %L, %L) RETURNING *",
                             email,
                             passwordHash,
-                            name,
-                            req.body.wallet_address || null
+                            req.body.wallet_address || null,
+                            first_name,
+                            last_name,
+                            address
                         )
 
                         client.query(insertQuery)
