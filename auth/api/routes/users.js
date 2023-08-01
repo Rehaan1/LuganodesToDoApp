@@ -7,7 +7,7 @@ const format = require('pg-format')
 const tokenCheck = require('../middlewares/tokenCheck')
 
 
-router.get('/user', tokenCheck, (req,res) => {
+router.get('/', tokenCheck, (req,res) => {
 
     dbUserPool.connect()
     .then(client => {
@@ -66,6 +66,71 @@ router.get('/user', tokenCheck, (req,res) => {
         })
     })
 
+})
+
+router.patch('/update', tokenCheck, (req, res) => {
+
+  if (!req.body.name) {
+    return res.status(400).json({
+      message: "Missing Required Body Content"
+    })
+  }
+
+  const newName = req.body.name
+  const userId = req.userId
+
+  dbUserPool.connect()
+    .then(client => {
+      client.query("BEGIN")
+        .then(() => {
+          const updateQuery = format(
+            "UPDATE users SET name = %L WHERE user_id = %L RETURNING *",
+            newName,
+            userId
+          )
+
+          client.query(updateQuery)
+            .then(result => {
+              if (result.rows.length === 0) {
+                client.query("ROLLBACK")
+                client.release()
+                return res.status(404).json({
+                  message: "User not found"
+                })
+              }
+
+              client.query("COMMIT")
+              client.release()
+              return res.status(200).json({
+                message: "Name updated successfully"
+              })
+            })
+            .catch(err => {
+              client.query("ROLLBACK")
+              client.release()
+              console.log("Error: ", err)
+              return res.status(500).json({
+                message: "Query error",
+                error: err
+              })
+            })
+        })
+        .catch(err => {
+          console.log("Error: ", err)
+          client.release()
+          return res.status(500).json({
+            message: "Database transaction error",
+            error: err
+          })
+        })
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(500).json({
+        message: "Database Connection Error",
+        error: err
+      })
+    })
 })
 
 module.exports = router
