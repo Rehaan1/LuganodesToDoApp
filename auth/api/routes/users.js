@@ -82,7 +82,7 @@ router.patch('/update', tokenCheck, (req, res) => {
     })
   }
 
-  if (!req.body.address_name) {
+  if (!req.body.address) {
     return res.status(400).json({
       message: "Missing Required Body Content"
     })
