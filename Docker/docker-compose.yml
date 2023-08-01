@@ -19,6 +19,8 @@ services:
     image: luganodestodo/todo-service
     environment:
       - PORT=3001
+    ports:
+      - "3001:3001"
     
 volumes:
   postgres_data:
