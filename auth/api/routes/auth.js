@@ -48,7 +48,7 @@ router.post('/email/register',(req,res) => {
             .then(() => {
 
                 const query = format(
-                    "SELECT * FROM todo WHERE email = %L",
+                    "SELECT * FROM users WHERE email = %L",
                     email
                 )
 
