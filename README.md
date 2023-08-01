@@ -27,7 +27,7 @@
 
 [X] Need to Find the Unique Identifier between various Authentication Methods
 
-[ ] Design Database for Authentication
+[X] Design Database for Authentication
 
 [ ] Create Authentication Mode (Microservice)
 
@@ -49,7 +49,7 @@
 
 #### API Endpoint Requirements:
 
-[ ] Email Authentication Endpoint
+[X] Email Authentication Endpoint
 
 [ ] Web 3 Authentication Endpoint
 
@@ -67,6 +67,6 @@
 [X] Update Todo by ID
 
 
-[ ] Account Setting/User Detail Change Endpoint
+[X] Account Setting/User Detail Change Endpoint
 
 [ ] Reset Password Email Based Authentication
