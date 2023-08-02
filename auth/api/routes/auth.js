@@ -451,7 +451,7 @@ router.post('/recover-password',(req,res)=> {
               client.query(updateQuery)
                 .then(result => {
 
-
+                    client.query("COMMIT")
                     
                     const mailOptions = {
                         from: process.env.EMAIL,
