@@ -4,6 +4,7 @@ import { TodoForm } from "./TodoForm";
 import { v4 as uuidv4 } from "uuid";
 import { EditTodoForm } from "./EditTodoForm";
 import fetch from 'isomorphic-fetch';
+import Cookies from 'js-cookie';
 
 export const TodoWrapper = () => {
   const [todos, setTodos] = useState([]);
@@ -15,11 +16,15 @@ export const TodoWrapper = () => {
   const addTodo = async (todo) => {
 
     try{
-        const endpoint = "http://192.168.10.3:5001/todo/add";
+        const endpoint = "http://todo:5001/todo/add";
         const data = {task: todo};
 
-        // @TODO: To get from Cookie in browser
-        const token = process.env.REACT_APP_AUTH_TOKEN;
+        const token =  Cookies.get('jwtToken');
+       
+        if (!token) {
+            token = ""
+          }
+
         const headers = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
@@ -31,6 +36,14 @@ export const TodoWrapper = () => {
             body: JSON.stringify(data),
           });
         
+        if (response.status === 401) {
+            
+            console.error('Unauthorized access: JWT token is invalid or expired');
+            
+            //@TODO: add Redirect
+            return;
+        }
+
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -45,21 +58,18 @@ export const TodoWrapper = () => {
         console.error('Error adding todo:', error);
         throw error;
     }
-
-    // setTodos([
-    //   ...todos,
-    //   { task_id: uuidv4(), task: todo, marked: false, isEditing: false },
-    // ]);
   }
 
   const fetchTodos = async() =>{
     
     try
     {
-        const endpoint = "http://192.168.10.3:5001/todo";
-        const token = process.env.REACT_APP_AUTH_TOKEN;
+        const endpoint = "http://todo:5001/todo";
+        const token =  Cookies.get('jwtToken');
 
-        console.log(token)
+        if (!token) {
+            token = ""
+          }
 
         const headers = {
             'Authorization': `Bearer ${token}`,
@@ -69,6 +79,14 @@ export const TodoWrapper = () => {
             method: 'GET',
             headers: headers,
         });
+
+        if (response.status === 401) {
+            
+            console.error('Unauthorized access: JWT token is invalid or expired');
+            
+            //@TODO: add Redirect
+            return;
+        }
 
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -90,14 +108,99 @@ export const TodoWrapper = () => {
     }
   }
 
-  const deleteTodo = (id) => setTodos(todos.filter((todo) => todo.task_id !== id));
+  const deleteTodo = async (id) =>{
+    try
+    {
+        const endpoint = "http://todo:5001/todo/remove";
+        const data = { taskId: id };
+        const token =  Cookies.get('jwtToken');
 
-  const toggleComplete = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.task_id === id ? { ...todo, marked: !todo.marked } : todo
-      )
-    );
+        if (!token) {
+            token = ""
+          }
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          };
+
+        const response = await fetch(endpoint, {
+            method: 'DELETE',
+            headers: headers,
+            body: JSON.stringify(data),
+          });
+
+        if (response.status === 401) {
+            
+            console.error('Unauthorized access: JWT token is invalid or expired');
+            
+            //@TODO: add Redirect
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        await fetchTodos();
+
+        const result = await response.json();
+        console.log(result);
+    }
+    catch (error) 
+    {
+        console.error('Error deleting todo:', error);
+        throw error;
+    }
+  }
+
+  const toggleComplete = async (id) => {
+
+    console.log(id)
+
+    try
+    {
+        const endpoint = "http://todo:5001/todo/update/mark";
+        const data = { taskId: id };
+        const token =  Cookies.get('jwtToken');
+
+        if (!token) {
+            token = ""
+          }
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        };
+
+        const response = await fetch(endpoint, {
+            method: 'PATCH',
+            headers: headers,
+            body: JSON.stringify(data),
+        });
+
+        if (response.status === 401) {
+            
+            console.error('Unauthorized access: JWT token is invalid or expired');
+            
+            //@TODO: add Redirect
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        await fetchTodos();
+
+        const result = await response.json();
+        console.log(result);
+    }
+    catch (error) 
+    {
+        console.error('Error toggling completion:', error);
+        throw error;
+    }
   }
 
   const editTodo = (id) => {
@@ -108,12 +211,61 @@ export const TodoWrapper = () => {
     );
   }
 
-  const editTask = (task, id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.task_id === id ? { ...todo, task, isEditing: !todo.isEditing } : todo
-      )
-    );
+  const editTask = async (task, id) => {
+    
+    try
+    {
+        const endpoint = "http://todo:5001/todo/update/task";
+        const data = { taskId: id, task: task };
+        const token =  Cookies.get('jwtToken');
+
+        if (!token) {
+            token = ""
+          }
+
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        };
+
+        const response = await fetch(endpoint, {
+            method: 'PATCH',
+            headers: headers,
+            body: JSON.stringify(data),
+        });
+
+
+        if (response.status === 401) {
+            
+            console.error('Unauthorized access: JWT token is invalid or expired');
+            
+            //@TODO: add Redirect
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        
+        await fetchTodos();
+
+        setTodos(
+            todos.map((todo) =>
+                todo.task_id === id ? { ...todo, task, isEditing: !todo.isEditing } : todo
+            )
+        );
+
+        const result = await response.json();
+        console.log(result);
+    
+    }
+    catch (error) 
+    {
+      console.error('Error editing task:', error);
+      throw error;
+    }
+    
+   
   };
 
   return (
