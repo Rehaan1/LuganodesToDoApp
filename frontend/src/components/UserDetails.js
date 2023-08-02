@@ -64,6 +64,7 @@ const UserDetail = ({onBack}) => {
           Back
       </button>
       <h2>User Details</h2>
+      {Object.keys(userDetails).length > 0 && (
       <form>
         <div>
           <label>First Name:</label>
@@ -101,6 +102,7 @@ const UserDetail = ({onBack}) => {
           Update
         </button>
       </form>
+      )}
     </div>
   );
 };
