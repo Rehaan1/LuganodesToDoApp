@@ -62,7 +62,7 @@ function App() {
       {isLoggedIn ? (
         <>
           {!showUserDetail ? (
-            <div>
+            <div className="user-detail-buttons">
               <button onClick={handleShowUserDetail}>View User Details</button>
               <TodoWrapper />
             </div>

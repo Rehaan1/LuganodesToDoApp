@@ -85,7 +85,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           type="text"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
-        required />
+         />
       </div>
       <button type="submit">Register</button>
     </form>

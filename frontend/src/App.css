@@ -134,3 +134,61 @@ h1 {
   padding: 8px 15px;
   cursor: pointer;
 }
+
+/* App.css */
+
+/* Styling for the Logout button */
+.Logout button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+/* Styling for the View User Details and Back buttons */
+.user-detail-buttons button {
+  background-color: #5bc0de;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.user-detail-buttons button:last-child {
+  margin-right: 0;
+}
+
+/* Styling for the Metamask Login button */
+.metaMaskLogin {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Styling for the regular Login button */
+.login-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Styling for the Install MetaMask message */
+.install-metaMask {
+  font-size: 18px;
+  color: #f44336;
+}

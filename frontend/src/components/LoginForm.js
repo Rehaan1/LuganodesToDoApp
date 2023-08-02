@@ -132,7 +132,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
                     Metamask Login
                 </button>
             </div>
-            ):(<h1>Install MetaMask</h1>)
+            ):(<h1 className="install-metaMask">Install MetaMask</h1>)
         }
 
         </div>
@@ -154,7 +154,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 />
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" className="login-button">Login</button>
             </form>
         </div>
     </div>
