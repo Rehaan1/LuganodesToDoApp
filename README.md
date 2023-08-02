@@ -5,16 +5,21 @@
 ## Steps to Start System
 1. Go to Docker Folder
 
-2. Create Enviroment Files for each service as <service_name>.env.list. Eg- todo.env.list and auth.env.list
+2. Create a Environment File .env
 
-3. Create another Environment File .env
+3. In the file add the following variables and assign values to it 
+- POSTGRES_ADMIN_USER
+- POSTGRES_ADMIN_PASSWORD
+- POSTGRES_DB
+- POSTGRES_PORT (Keep it 5432)
+- POSTGRES_HOST
+- JWT_SECRET
+- JWT_EXPIRY
 
-4. In all the 3 files add the following values POSTGRES_ADMIN_USER, POSTGRES_ADMIN_PASSWORD, POSTGRES_DB, POSTGRES_PORT, POSTGRES_HOST, JWT_SECRET, JWT_EXPIRY
-
-5. use psql and access the postgress database
+4. use psql and access the postgress database
 ``` psql -h localhost -U <USERNAME> -d <DATABASE NAME> ```
 
-6. Create two tables in that database 'todo'  and 'users' with the following:
+5. Create two tables in that database 'todo'  and 'users' with the following:
 
 ``` CREATE TABLE todo_list ( task_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY, user_id UUID NOT NULL, task TEXT NOT NULL, marked BOOLEAN NOT NULL DEFAULT false); ```
 
