@@ -123,7 +123,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
 
   return (
     
-    <div>
+    <div className="LoginForm">
         <div>
         {
             metaMaskBrowser ? (
@@ -138,7 +138,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
         </div>
         <div>
             <form onSubmit={handleFormSubmit}>
-            <div>
+            <div className="form-group">
                 <label>Email:</label>
                 <input
                 type="email"
@@ -146,7 +146,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 />
             </div>
-            <div>
+            <div className="form-group">
                 <label>Password:</label>
                 <input
                 type="password"

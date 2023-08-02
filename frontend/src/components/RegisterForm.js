@@ -36,8 +36,10 @@ const RegisterForm = ({ onRegisterSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <div>
+    <div className="RegisterForm">
+      <h2>Register</h2>
+      <form onSubmit={handleFormSubmit}>
+      <div  className="form-group">
         <label>Email:</label>
         <input
           type="email"
@@ -45,7 +47,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           onChange={(e) => setEmail(e.target.value)}
         required />
       </div>
-      <div>
+      <div  className="form-group">
         <label>Password:</label>
         <input
           type="password"
@@ -53,7 +55,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           onChange={(e) => setPassword(e.target.value)}
         required />
       </div>
-      <div>
+      <div  className="form-group">
         <label>First Name:</label>
         <input
           type="text"
@@ -61,7 +63,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           onChange={(e) => setFirstName(e.target.value)}
         required />
       </div>
-      <div>
+      <div  className="form-group">
         <label>Last Name:</label>
         <input
           type="text"
@@ -69,7 +71,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           onChange={(e) => setLastName(e.target.value)}
         required />
       </div>
-      <div>
+      <div  className="form-group">
         <label>Address:</label>
         <input
           type="text"
@@ -77,7 +79,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
           onChange={(e) => setAddress(e.target.value)}
         required />
       </div>
-      <div>
+      <div  className="form-group">
         <label>Wallet Address:</label>
         <input
           type="text"
@@ -87,6 +89,8 @@ const RegisterForm = ({ onRegisterSuccess }) => {
       </div>
       <button type="submit">Register</button>
     </form>
+    </div>
+    
   );
 };
 

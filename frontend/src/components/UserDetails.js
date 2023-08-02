@@ -51,18 +51,21 @@ const UserDetail = ({onBack}) => {
       .then((response) => response.json())
       .then((data) => {
         console.log('User details updated successfully:', data);
+        window.alert('User details updated successfully');
         setUserDetails(data);
       })
       .catch((error) => {
         console.error('Error updating user details:', error);
+        window.alert('Error Updating User Detail');
       });
   };
 
   return (
     <div className="UserDetail">
-      <button type="button" onClick={onBack}>
+      <button type="button" onClick={onBack} className="back-button">
           Back
       </button>
+      <div className="user-profile">
       <h2>User Details</h2>
       <form>
         <div>
@@ -101,6 +104,7 @@ const UserDetail = ({onBack}) => {
           Update
         </button>
       </form>
+      </div>
     </div>
   );
 };
