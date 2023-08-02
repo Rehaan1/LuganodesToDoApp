@@ -27,7 +27,13 @@ const RegisterForm = ({ onRegisterSuccess }) => {
 
       if (response.status === 200) {
         onRegisterSuccess(); // Notify App.js about successful registration
-      } else {
+      }else if(response.status === 409)
+      {
+        window.alert("User already exists, please login")
+        onRegisterSuccess();
+        console.log('User already exists.');
+      } 
+      else {
         console.log('Registration failed. Please try again.');
       }
     } catch (error) {
