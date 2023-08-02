@@ -67,7 +67,7 @@ const UserDetail = ({onBack}) => {
       </button>
       <div className="user-profile">
       <h2>User Details</h2>
-      <form>
+      <form onSubmit={handleUpdate}>
         <div>
           <label>First Name:</label>
           <input
@@ -103,7 +103,7 @@ const UserDetail = ({onBack}) => {
             readOnly
           />
         </div>
-        <button type="button" onClick={handleUpdate}>
+        <button type="submit">
           Update
         </button>
       </form>
