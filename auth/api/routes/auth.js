@@ -5,18 +5,12 @@ const router = express.Router()
 const { dbUserPool } = require('../db/db')
 const format = require('pg-format')
 const bcrypt = require('bcryptjs')
-const nodemailer = require('nodemailer');
+const Mailgun = require('mailgun.js');
+const mailgun = new Mailgun(formData);
 
 const jwt = require('jsonwebtoken')
 
-// Nodemailer configuration
-const transporter = nodemailer.createTransport({
-    service: 'Gmail', // Use Gmail as the email service
-    auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASSWORD
-    }
-  });
+const mg = mailgun.client({username: 'api', key: process.env.MAILGUN_API_KEY || 'key-yourkeyhere'});
 
 router.get('/',(req,res) => {
     return res.status(200).json({
@@ -452,17 +446,20 @@ router.post('/recover-password',(req,res)=> {
               client.query(query)
                 .then(result => {
 
-                    const mailOptions = {
-                        from: process.env.EMAIL,
-                        to: email,
-                        subject: 'Password Recovery',
-                        text: `Your new password: ${newPassword}. Please update your password after logging in`
-                      };
-                    
-                    transporter.sendMail(mailOptions, (err, info) => {
-                        if (err) 
-                        {
-                            client.query("ROLLBACK")
+                    mg.messages.create('sandbox-123.mailgun.org', {
+                        from: "rehaanmazid@gmail.com",
+                        to: [email],
+                        subject: "Password Recovery",
+                        text: `Your new password: ${newPassword}. Please update your password after logging in`,
+                        html: "<h1>Your new password:"+newPassword+". Please update your password after logging in`</h1>"
+                    })
+                    .then(msg =>{
+                        return res.status(200).json({
+                            message: "Password Recovery Mail Sent"
+                        })
+                    })
+                    .catch(err =>{
+                        client.query("ROLLBACK")
                             client.release()
                             console.log(" Mailing Error: ", err)
 
@@ -470,11 +467,7 @@ router.post('/recover-password',(req,res)=> {
                                 message: "Mailing error",
                                 error: err
                             })
-                        }
-                        return res.status(200).json({
-                            message: "Password Recovery Mail Sent"
-                        })
-                      });  
+                    })
 
                 })
                 .catch(err => {
