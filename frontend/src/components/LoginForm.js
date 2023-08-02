@@ -8,6 +8,15 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
   const [walletAddress, setWalletAddress] = useState("");
   const [metaMaskBrowser, setMetaMaskBrowser] = useState(true)
 
+  const [forgotPasswordMode, setForgotPasswordMode] = useState(false);
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
+
+
+  const toggleForgotPasswordMode = () => {
+    setForgotPasswordMode(!forgotPasswordMode);
+  };
+
+
   // For MetaMask
   const detectCurrentProvider = () =>{
     let provider;
@@ -121,6 +130,41 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
     }
   };
 
+
+  const handleForgotPasswordSubmit = async (e) => {
+    e.preventDefault();
+
+    const endpoint = "/api/auth/auth/recover-password";
+    const baseUrl = window.location.protocol + "//" + window.location.hostname
+
+    try {
+      const response = await fetch(baseUrl + endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: forgotPasswordEmail }),
+      })
+
+      if(response == 200)
+      {
+        window.alert("Password Recovery Email Sent");
+        toggleForgotPasswordMode()
+      }
+      else
+      {
+        console.log("Password Recovery Failed")
+        window.alert("Password Recovery Failed")
+        toggleForgotPasswordMode()
+      }
+
+    } catch (error) {
+      console.error('Error occurred while requesting password reset:', error)
+      window.alert("Password Recovery Failed")
+      toggleForgotPasswordMode()
+    }
+  }
+
   return (
     
     <div className="LoginForm">
@@ -137,26 +181,48 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
 
         </div>
         <div>
-            <form onSubmit={handleFormSubmit}>
+        {forgotPasswordMode ? (
+          <form onSubmit={handleForgotPasswordSubmit}>
             <div className="form-group">
-                <label>Email:</label>
-                <input
+              <label>Enter your email:</label>
+              <input
+                type="email"
+                value={forgotPasswordEmail}
+                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="forgot-password-button">
+              Send Reset Email
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleFormSubmit}>
+            <div className="form-group">
+              <label>Email:</label>
+              <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                />
+              />
             </div>
             <div className="form-group">
-                <label>Password:</label>
-                <input
+              <label>Password:</label>
+              <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                />
+              />
             </div>
-            <button type="submit" className="login-button">Login</button>
-            </form>
-        </div>
+            <button type="submit" className="login-button">
+              Login
+            </button>
+            <button type="button" className="forgot-password-button" onClick={toggleForgotPasswordMode}>
+              Forgot Password?
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 };
