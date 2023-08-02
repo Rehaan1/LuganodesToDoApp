@@ -67,7 +67,6 @@ export const TodoWrapper = () => {
     try
     {
         var token =  Cookies.get('jwtToken');
-        console.log(token);
 
         const endpoint = "/api/todo/todo";
         const baseUrl = window.location.protocol + "//" + window.location.hostname;
