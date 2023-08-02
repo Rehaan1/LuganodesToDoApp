@@ -37,6 +37,19 @@ services:
     image: luganodestodo/frontend-service
     ports:
       - "3000:3000"
+
+  nginx:
+    image: luganodestodo/nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - todo
+      - auth
+      - frontend
+    links:
+      - todo
+      - auth
+      - frontend
     
 volumes:
   postgres_data:
