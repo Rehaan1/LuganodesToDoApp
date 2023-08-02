@@ -448,7 +448,7 @@ router.post('/recover-password',(req,res)=> {
                   email
               )
 
-              client.query(query)
+              client.query(updateQuery)
                 .then(result => {
 
 
