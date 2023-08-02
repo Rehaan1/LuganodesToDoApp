@@ -31,7 +31,7 @@ function App() {
 
 
   const handleLoginFailure = () => {
-    setShowLogin(true);
+    setShowLogin(false);
   };
 
   const handleLogout = () => {
@@ -43,7 +43,10 @@ function App() {
   return (
     <div className="App">
       <div className="Logout">
+        {isLoggedIn ? (
         <button onClick={handleLogout}>Logout</button>
+        ):<h1>Welcome to Todo DApp</h1>}
+        
       </div>
      {isLoggedIn ? (
         <TodoWrapper />

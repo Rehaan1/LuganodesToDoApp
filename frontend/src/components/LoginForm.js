@@ -23,11 +23,14 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
 
       const data = await response.json();
 
-      if (data && data.token) {
+      if (data && data.token) 
+      {
         Cookies.set('jwtToken', data.token); 
         onLoginSuccess();
         console.log('Login Successful');
-      } else {
+      } 
+      else 
+      {
         onLoginFailure();
         console.log('Login failed. Check your credentials.');
       }
