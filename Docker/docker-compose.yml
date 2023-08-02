@@ -18,7 +18,7 @@ services:
   todo:
     image: luganodestodo/todo-service
     env_file:
-      - ./todo.env.list
+      - ./.env
     environment:
       - PORT=5001
     ports:
@@ -27,7 +27,7 @@ services:
   auth:
     image: luganodestodo/auth-service
     env_file:
-      - ./auth.env.list
+      - ./.env
     environment:
       - PORT=4001
     ports:
