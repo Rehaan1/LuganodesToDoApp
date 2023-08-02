@@ -1,4 +1,5 @@
 # Luganodes Web3 Authenticated Todo System
+### Microservice Architecture
 
 ## Backend Documentation For the Amigos :cowboy_hat_face:: https://documenter.getpostman.com/view/14038453/2s9XxvTF9n
 
@@ -35,6 +36,20 @@ If unable to execute, give necessary executable permission. eg. ``` chmod +x dat
 5. Now you can do ```docker-compose down``` and then use ```docker-compose up``` to stop and start
 
 5. Voila! Alls Setup. Now you can access Frontend in the localhost or ip of hosting machine at port 3000. To access Backend Directly refer backend documentation.
+
+
+## Possible Improvements
+
+1. Moving to Docker Swarm for ease of scaling and slowly migrate to Kubernetes as required
+
+2. Adding Logging through providers like LogTail for capturing detailed Logs for Error Detection and Debugging
+
+3. Doing Horizontal Partitioning on the database to reduce index search time during high scale operations
+
+4. Using different Database users for read, create, update to ensure further security
+
+5. Using Nignx further as a Load Balancer for the microservices
+
 
 ## Tasks
 #### Luganodes Major Requirements
