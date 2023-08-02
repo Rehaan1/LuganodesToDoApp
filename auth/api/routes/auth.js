@@ -5,8 +5,18 @@ const router = express.Router()
 const { dbUserPool } = require('../db/db')
 const format = require('pg-format')
 const bcrypt = require('bcryptjs')
+const nodemailer = require('nodemailer');
 
 const jwt = require('jsonwebtoken')
+
+// Nodemailer configuration
+const transporter = nodemailer.createTransport({
+    service: 'Gmail', // Use Gmail as the email service
+    auth: {
+      user: process.env.EMAIL,
+      pass: process.env.EMAIL_PASSWORD
+    }
+  });
 
 router.get('/',(req,res) => {
     return res.status(200).json({
@@ -403,5 +413,117 @@ router.post('/email/login', (req, res) => {
     })
 
 })
+
+router.post('/recover-password',(req,res)=> {
+    
+    const email = req.body.email
+
+    dbUserPool.connect()
+    .then(client => {
+      client.query("BEGIN")
+        .then(() => {
+          
+            const query = format(
+            "SELECT * FROM users WHERE email = %L",
+            email
+          )
+
+          client.query(query)
+            .then(result => {
+              
+              if (result.rows.length === 0) {
+                client.release()
+
+                return res.status(401).json({
+                  message: "Email does not exists"
+                })
+              }
+
+              const newPassword = generateRandomPassword();
+              const salt = bcrypt.genSaltSync(10)
+              const passwordHash = bcrypt.hashSync(newPassword, salt)
+              
+              const updateQuery = format(
+                  "UPDATE users SET password = %L WHERE email = %L",
+                  passwordHash,
+                  email
+              )
+
+              client.query(query)
+                .then(result => {
+
+                    const mailOptions = {
+                        from: process.env.EMAIL,
+                        to: email,
+                        subject: 'Password Recovery',
+                        text: `Your new password: ${newPassword}. Please update your password after logging in`
+                      };
+                    
+                    transporter.sendMail(mailOptions, (err, info) => {
+                        if (err) 
+                        {
+                            client.query("ROLLBACK")
+                            client.release()
+                            console.log(" Mailing Error: ", err)
+
+                            return res.status(500).json({
+                                message: "Mailing error",
+                                error: err
+                            })
+                        }
+                        return res.status(200).json({
+                            message: "Password Recovery Mail Sent"
+                        })
+                      });  
+
+                })
+                .catch(err => {
+                    client.query("ROLLBACK")
+                    client.release()
+                    console.log("Error: ", err)
+                    return res.status(500).json({
+                      message: "Query error",
+                      error: err
+                    })
+                  })
+
+            })
+            .catch(err => {
+              client.query("ROLLBACK")
+              client.release()
+              console.log("Error: ", err)
+              return res.status(500).json({
+                message: "Query error",
+                error: err
+              })
+            })
+        })
+        .catch(err => {
+          console.log("Error: ", err)
+          client.release()
+          return res.status(500).json({
+            message: "Database transaction error",
+            error: err
+          })
+        })
+    })
+    .catch(err => {
+      console.log(err)
+      return res.status(500).json({
+        message: "Database Connection Error",
+        error: err
+      })
+    })
+
+})
+
+function generateRandomPassword() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let newPassword = '';
+    for (let i = 0; i < 8; i++) {
+      newPassword += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return newPassword;
+  }
 
 module.exports = router

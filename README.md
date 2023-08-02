@@ -15,6 +15,8 @@
 - POSTGRES_HOST
 - JWT_SECRET
 - JWT_EXPIRY
+- EMAIL
+- EMAIL_PASSWORD (for password recovery mailing)
 
 3. Run 
 
@@ -86,4 +88,4 @@ If unable to execute, give necessary executable permission. eg. ``` chmod +x dat
 
 - [X] Account Setting/User Detail Change Endpoint
 
-- [ ] Reset Password Email Based Authentication
+- [X] Reset Password Email Based Authentication
