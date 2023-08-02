@@ -19,7 +19,7 @@ export const TodoWrapper = () => {
         const endpoint = "http://todo:5001/todo/add";
         const data = {task: todo};
 
-        const token =  Cookies.get('jwtToken');
+        var token =  Cookies.get('jwtToken');
        
         if (!token) {
             token = ""
@@ -65,7 +65,7 @@ export const TodoWrapper = () => {
     try
     {
         const endpoint = "http://todo:5001/todo";
-        const token =  Cookies.get('jwtToken');
+        var token =  Cookies.get('jwtToken');
 
         if (!token) {
             token = ""
@@ -113,7 +113,7 @@ export const TodoWrapper = () => {
     {
         const endpoint = "http://todo:5001/todo/remove";
         const data = { taskId: id };
-        const token =  Cookies.get('jwtToken');
+        var token =  Cookies.get('jwtToken');
 
         if (!token) {
             token = ""
@@ -162,7 +162,7 @@ export const TodoWrapper = () => {
     {
         const endpoint = "http://todo:5001/todo/update/mark";
         const data = { taskId: id };
-        const token =  Cookies.get('jwtToken');
+        var token =  Cookies.get('jwtToken');
 
         if (!token) {
             token = ""
@@ -217,7 +217,7 @@ export const TodoWrapper = () => {
     {
         const endpoint = "http://todo:5001/todo/update/task";
         const data = { taskId: id, task: task };
-        const token =  Cookies.get('jwtToken');
+        var token =  Cookies.get('jwtToken');
 
         if (!token) {
             token = ""
