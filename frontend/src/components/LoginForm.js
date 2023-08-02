@@ -146,7 +146,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
         body: JSON.stringify({ email: forgotPasswordEmail }),
       })
 
-      if(response == 200)
+      if(response.status == 200)
       {
         window.alert("Password Recovery Email Sent");
         toggleForgotPasswordMode()
