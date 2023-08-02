@@ -124,6 +124,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
   return (
     
     <div>
+        <div>
         {
             metaMaskBrowser ? (
             <div>
@@ -134,27 +135,27 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
             ):(<h1>Install MetaMask</h1>)
         }
 
-        <div>
-            
-        <form onSubmit={handleFormSubmit}>
-        <div>
-            <label>Email:</label>
-            <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            />
         </div>
         <div>
-            <label>Password:</label>
-            <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            />
-        </div>
-        <button type="submit">Login</button>
-        </form>
+            <form onSubmit={handleFormSubmit}>
+            <div>
+                <label>Email:</label>
+                <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                />
+            </div>
+            <div>
+                <label>Password:</label>
+                <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                />
+            </div>
+            <button type="submit">Login</button>
+            </form>
         </div>
     </div>
   );
