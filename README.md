@@ -24,6 +24,9 @@
 
 ``` .\setup.sh or .\setup.ps1 ```
 
+If unable to execute, give necessary executable permission. eg. ``` chmod +x setup.sh ```
+
+7. Access Frontend in the localhost or ip of hosting machine at port 3000
 
 ## Tasks
 #### Luganodes Major Requirements
