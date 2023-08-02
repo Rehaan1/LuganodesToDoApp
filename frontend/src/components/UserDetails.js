@@ -53,7 +53,7 @@ const UserDetail = ({onBack}) => {
         {
             console.log('User details updated successfully:');
             window.alert('User details updated successfully');
-            setUserDetails(data);
+            setUserDetails(response.data);
             return
         }
         else
