@@ -2,6 +2,7 @@ import './App.css';
 import { TodoWrapper } from './components/TodoWrapper';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
+import UserDetail from './components/UserDetails';
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
@@ -9,6 +10,7 @@ function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [showUserDetail, setShowUserDetail] = useState(false);
 
   useEffect(() => {
     // Check if a token exists in the cookie
@@ -38,6 +40,15 @@ function App() {
     Cookies.remove('jwtToken');
     setIsLoggedIn(false);
     setShowLogin(true);
+    setShowUserDetail(false);
+  };
+
+  const handleShowUserDetail = () => {
+    setShowUserDetail(true);
+  };
+
+  const handleBackToTodoWrapper = () => {
+    setShowUserDetail(false);
   };
 
   return (
@@ -48,10 +59,22 @@ function App() {
         ):<h1>Welcome to Todo DApp</h1>}
         
       </div>
-     {isLoggedIn ? (
-        <TodoWrapper />
+      {isLoggedIn ? (
+        <>
+          {!showUserDetail ? (
+            <div>
+              <button onClick={handleShowUserDetail}>View User Details</button>
+              <TodoWrapper />
+            </div>
+          ) : (
+            <UserDetail onBack={handleBackToTodoWrapper} />
+          )}
+        </>
       ) : showLogin ? (
-        <LoginForm onLoginSuccess={handleLoginSuccess} onLoginFailure={handleLoginFailure} />
+        <LoginForm
+          onLoginSuccess={handleLoginSuccess}
+          onLoginFailure={handleLoginFailure}
+        />
       ) : (
         <RegisterForm onRegisterSuccess={handleRegisterSuccess} />
       )}
