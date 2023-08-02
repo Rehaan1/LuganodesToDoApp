@@ -37,9 +37,9 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
         await currentProvider.request({method: 'eth_requestAccounts'});
         const web3 = new Web3(currentProvider);
         const userAccount = await web3.eth.requestAccounts();
-        const walletAddress = userAccount[0];
-        setWalletAddress(walletAddress);
-        handleMetaMaskLogin();
+        const walletAddressAcc = userAccount[0];
+        setWalletAddress(walletAddressAcc);
+        handleMetaMaskLogin(walletAddressAcc);
       }
       else
       {
@@ -52,7 +52,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
     }
   }
 
-  const handleMetaMaskLogin = async ()=>{
+  const handleMetaMaskLogin = async (wallet)=>{
 
     const endpoint = "/api/auth/auth/metaMask/login";
     const baseUrl = window.location.protocol + "//" + window.location.hostname;
@@ -64,7 +64,7 @@ const LoginForm = ({ onLoginSuccess, onLoginFailure }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ wallet_address: walletAddress }),
+        body: JSON.stringify({ wallet_address: wallet }),
       });
 
       const data = await response.json();
