@@ -17,6 +17,8 @@ export const TodoWrapper = () => {
 
     try{
         const endpoint = "/api/todo/todo/add";
+        const baseUrl = window.location.protocol + "//" + window.location.hostname;
+
         const data = {task: todo};
 
         var token =  Cookies.get('jwtToken');
@@ -30,7 +32,7 @@ export const TodoWrapper = () => {
             'Authorization': `Bearer ${token}`,
         };
 
-        const response = await fetch(endpoint, {
+        const response = await fetch(baseUrl+endpoint, {
             method: 'POST',
             headers: headers,
             body: JSON.stringify(data),
@@ -68,7 +70,7 @@ export const TodoWrapper = () => {
         console.log(token);
 
         const endpoint = "/api/todo/todo";
-        
+        const baseUrl = window.location.protocol + "//" + window.location.hostname;
 
         if (!token) {
             token = ""
@@ -78,7 +80,7 @@ export const TodoWrapper = () => {
             'Authorization': `Bearer ${token}`,
           };
 
-        const response = await fetch(endpoint, {
+        const response = await fetch(baseUrl+endpoint, {
             method: 'GET',
             headers: headers,
         });
@@ -117,6 +119,7 @@ export const TodoWrapper = () => {
         const endpoint = "/api/todo/todo/remove";
         const data = { taskId: id };
         var token =  Cookies.get('jwtToken');
+        const baseUrl = window.location.protocol + "//" + window.location.hostname;
 
         if (!token) {
             token = ""
@@ -127,7 +130,7 @@ export const TodoWrapper = () => {
             'Authorization': `Bearer ${token}`,
           };
 
-        const response = await fetch(endpoint, {
+        const response = await fetch(baseUrl+endpoint, {
             method: 'DELETE',
             headers: headers,
             body: JSON.stringify(data),
@@ -164,6 +167,7 @@ export const TodoWrapper = () => {
     try
     {
         const endpoint = "/api/todo/todo/update/mark";
+        const baseUrl = window.location.protocol + "//" + window.location.hostname;
         const data = { taskId: id };
         var token =  Cookies.get('jwtToken');
 
@@ -176,7 +180,7 @@ export const TodoWrapper = () => {
             'Authorization': `Bearer ${token}`,
         };
 
-        const response = await fetch(endpoint, {
+        const response = await fetch(baseUrl+endpoint, {
             method: 'PATCH',
             headers: headers,
             body: JSON.stringify(data),
@@ -219,6 +223,7 @@ export const TodoWrapper = () => {
     try
     {
         const endpoint = "/api/todo/todo/update/task";
+        const baseUrl = window.location.protocol + "//" + window.location.hostname;
         const data = { taskId: id, task: task };
         var token =  Cookies.get('jwtToken');
 
@@ -231,7 +236,7 @@ export const TodoWrapper = () => {
             'Authorization': `Bearer ${token}`,
         };
 
-        const response = await fetch(endpoint, {
+        const response = await fetch(baseUrl+endpoint, {
             method: 'PATCH',
             headers: headers,
             body: JSON.stringify(data),
