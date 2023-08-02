@@ -1,11 +1,11 @@
 # Luganodes Web3 Authenticated Todo System
 
-## Backend Documentation: https://documenter.getpostman.com/view/14038453/2s9XxvTF9n
+## Backend Documentation For the Amigos :cowboy_hat_face:: https://documenter.getpostman.com/view/14038453/2s9XxvTF9n
 
 ## Steps to Start System
-1. Go to Docker Folder
+1. Go to the Docker Folder
 
-2. Create a Environment File .env
+2. Create an Environment File .env
 
 3. In the file add the following variables and assign values to it 
 - POSTGRES_ADMIN_USER
@@ -16,22 +16,21 @@
 - JWT_SECRET
 - JWT_EXPIRY
 
-4. use psql and access the postgress database
-``` psql -h localhost -U <USERNAME> -d <DATABASE NAME> ```
-
-5. Create two tables in that database 'todo'  and 'users' with the following:
-
-``` CREATE TABLE todo_list ( task_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY, user_id UUID NOT NULL, task TEXT NOT NULL, marked BOOLEAN NOT NULL DEFAULT false); ```
-
-```CREATE TABLE users ( user_id UUID DEFAULT uuid_generate_v4() PRIMARY KEY, email VARCHAR(255) UNIQUE, password TEXT, first_name VARCHAR(100), last_name VARCHAR(100), address TEXT, wallet_address TEXT);```
-
-6. Run 
+3. Run 
 
 ``` .\setup.sh or .\setup.ps1 ```
 
 If unable to execute, give necessary executable permission. eg. ``` chmod +x setup.sh ```
 
-7. Access Frontend in the localhost or ip of hosting machine at port 3000
+4. Run the following to setup database
+
+```.\database-setup.sh or .\database.ps1 ```
+
+If unable to execute, give necessary executable permission. eg. ``` chmod +x database-setup.sh ```
+
+5. Now you can do ```docker-compose down``` and then use ```docker-compose up``` to stop and start
+
+5. Voila! Alls Setup. Now you can access Frontend in the localhost or ip of hosting machine at port 3000. To access Backend Directly refer backend documentation.
 
 ## Tasks
 #### Luganodes Major Requirements
