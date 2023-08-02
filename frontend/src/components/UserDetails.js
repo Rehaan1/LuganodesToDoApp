@@ -64,7 +64,6 @@ const UserDetail = ({onBack}) => {
           Back
       </button>
       <h2>User Details</h2>
-      {Object.keys(userDetails).length > 0 && (
       <form>
         <div>
           <label>First Name:</label>
@@ -95,14 +94,13 @@ const UserDetail = ({onBack}) => {
           <input
             type="text"
             value={walletAddress}
-            onChange={(e) => setWalletAddress(e.target.value)}
+            readOnly
           />
         </div>
         <button type="button" onClick={handleUpdate}>
           Update
         </button>
       </form>
-      )}
     </div>
   );
 };
