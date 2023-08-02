@@ -8,3 +8,6 @@ docker build -t luganodestodo/auth-service ../auth
 
 # Build Docker image for frontend service
 docker build -t luganodestodo/frontend-service ../frontend
+
+# Build Docker image for frontend service
+docker build -t luganodestodo/nginx ../nginx
