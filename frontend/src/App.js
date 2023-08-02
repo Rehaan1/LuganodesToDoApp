@@ -34,8 +34,17 @@ function App() {
     setShowLogin(true);
   };
 
+  const handleLogout = () => {
+    Cookies.remove('jwtToken');
+    setIsLoggedIn(false);
+    setShowLogin(true);
+  };
+
   return (
     <div className="App">
+      <div className="Logout">
+        <button onClick={handleLogout}>Logout</button>
+      </div>
      {isLoggedIn ? (
         <TodoWrapper />
       ) : showLogin ? (
