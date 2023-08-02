@@ -18,7 +18,7 @@ router.get('/', tokenCheck, (req,res) =>{
             .then(() => {
 
                 const query = format(
-                    "SELECT * FROM todo WHERE user_id = %L",
+                    "SELECT * FROM todo WHERE user_id = %L ORDER BY marked ASC",
                     userId
                 )
 
