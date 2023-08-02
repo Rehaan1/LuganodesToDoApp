@@ -48,15 +48,22 @@ const UserDetail = ({onBack}) => {
       },
       body: JSON.stringify({ first_name: firstName, last_name:lastName, address:address }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('User details updated successfully:', data);
-        window.alert('User details updated successfully');
-        setUserDetails(data);
+      .then((response) =>{
+        if(response.status == 200)
+        {
+            console.log('User details updated successfully:');
+            window.alert('User details updated successfully');
+            setUserDetails(data);
+            return
+        }
+        else
+        {
+            console.error('Error updating user details:');
+            window.alert('Error Updating User Detail');
+        }
       })
       .catch((error) => {
-        console.error('Error updating user details:', error);
-        window.alert('Error Updating User Detail');
+        console.log('Error:', error);
       });
   };
 
