@@ -18,13 +18,15 @@
 
 3. Run 
 
-``` .\setup.sh or .\setup.ps1 ```
+``` ./setup.sh or ./setup.ps1 ```
 
 If unable to execute, give necessary executable permission. eg. ``` chmod +x setup.sh ```
 
-4. Run the following to setup database
+4. On Another Terminal run the following to setup database
 
-```.\database-setup.sh or .\database.ps1 ```
+```./database-setup.sh <DATABASE NAME> <DB USER> ```
+OR
+```./database.ps1 -DB_NAME <DB_NAME> -USERNAME <USERNAME> ```
 
 If unable to execute, give necessary executable permission. eg. ``` chmod +x database-setup.sh ```
 

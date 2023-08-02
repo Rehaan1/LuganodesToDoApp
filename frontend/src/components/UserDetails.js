@@ -74,6 +74,7 @@ const UserDetail = ({onBack}) => {
             type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -82,6 +83,7 @@ const UserDetail = ({onBack}) => {
             type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -90,6 +92,7 @@ const UserDetail = ({onBack}) => {
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            required
           />
         </div>
         <div>
