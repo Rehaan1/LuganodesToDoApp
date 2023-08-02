@@ -22,11 +22,11 @@ const UserDetail = ({onBack}) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setUserDetails(data);
-        setFirstName(data.first_name);
-        setLastName(data.last_name);
-        setWalletAddress(data.wallet_address);
-        setAddress(data.address);
+        setUserDetails(data.data);
+        setFirstName(data.data.first_name);
+        setLastName(data.data.last_name);
+        setWalletAddress(data.data.wallet_address);
+        setAddress(data.data.address);
       })
       .catch((error) => {
         console.error('Error fetching user details:', error);
