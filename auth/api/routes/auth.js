@@ -79,28 +79,59 @@ router.post('/email/register',(req,res) => {
                               message: "Email already exists"
                             })
                         }
-                        
-                        const salt = bcrypt.genSaltSync(10)
-                        const passwordHash = bcrypt.hashSync(req.body.password, salt)
-                        
-                        const insertQuery = format(
-                            "INSERT INTO users (email, password, wallet_address, first_name, last_name, address) VALUES (%L, %L, %L, %L, %L, %L) RETURNING *",
-                            email,
-                            passwordHash,
-                            req.body.wallet_address || null,
-                            first_name,
-                            last_name,
-                            address
-                        )
 
-                        client.query(insertQuery)
-                            .then(insertResult => {
-                                client.query("COMMIT")
-                                client.release()
+                        if(req.body.wallet_address)
+                        {
+                            const query = format(
+                                "SELECT * FROM users WHERE wallet_address = %L",
+                                req.body.wallet_address
+                            )
 
-                                return res.status(200).json({
-                                    message: "User added successfully"
-                                  })
+                            client.query(query)
+                            .then(result => {
+
+                                if (result.rows.length > 0) {
+                                    
+                                    client.release()
+        
+                                    return res.status(409).json({
+                                      message: "User already exists."
+                                    })
+                                }
+
+                                const salt = bcrypt.genSaltSync(10)
+                                const passwordHash = bcrypt.hashSync(req.body.password, salt)
+                                
+                                const insertQuery = format(
+                                    "INSERT INTO users (email, password, wallet_address, first_name, last_name, address) VALUES (%L, %L, %L, %L, %L, %L) RETURNING *",
+                                    email,
+                                    passwordHash,
+                                    req.body.wallet_address || null,
+                                    first_name,
+                                    last_name,
+                                    address
+                                )
+
+                                client.query(insertQuery)
+                                    .then(insertResult => {
+                                        client.query("COMMIT")
+                                        client.release()
+
+                                        return res.status(200).json({
+                                            message: "User added successfully"
+                                        })
+                                    }).catch(err => {
+                                        client.query("ROLLBACK")
+                                        client.release()
+                                        
+                                        console.log("Error: ", err)
+                                        return res.status(500).json({
+                                            message: "Error Adding User",
+                                            error: err
+                                        })
+                                    })
+
+
                             }).catch(err => {
                                 client.query("ROLLBACK")
                                 client.release()
@@ -111,7 +142,41 @@ router.post('/email/register',(req,res) => {
                                     error: err
                                 })
                             })
-                        
+                        }
+                        else
+                        {
+                            const salt = bcrypt.genSaltSync(10)
+                            const passwordHash = bcrypt.hashSync(req.body.password, salt)
+                            
+                            const insertQuery = format(
+                                "INSERT INTO users (email, password, wallet_address, first_name, last_name, address) VALUES (%L, %L, %L, %L, %L, %L) RETURNING *",
+                                email,
+                                passwordHash,
+                                req.body.wallet_address || null,
+                                first_name,
+                                last_name,
+                                address
+                            )
+
+                            client.query(insertQuery)
+                                .then(insertResult => {
+                                    client.query("COMMIT")
+                                    client.release()
+
+                                    return res.status(200).json({
+                                        message: "User added successfully"
+                                    })
+                                }).catch(err => {
+                                    client.query("ROLLBACK")
+                                    client.release()
+                                    
+                                    console.log("Error: ", err)
+                                    return res.status(500).json({
+                                        message: "Error Adding User",
+                                        error: err
+                                    })
+                                })
+                        }
                     })
                     .catch(err => {
                         client.query("ROLLBACK")
@@ -295,7 +360,7 @@ router.post('/email/login', (req, res) => {
                                     message: "Login successful",
                                     token: token
                                   })
-                                  
+
                             }).catch(err => {
                                 client.query("ROLLBACK")
                                 client.release()
