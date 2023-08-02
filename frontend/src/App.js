@@ -56,7 +56,7 @@ function App() {
       <div className="Logout">
         {isLoggedIn ? (
         <button onClick={handleLogout}>Logout</button>
-        ):<h1>Welcome to Todo DApp</h1>}
+        ):<h1>Login/Register to DApp</h1>}
         
       </div>
       {isLoggedIn ? (

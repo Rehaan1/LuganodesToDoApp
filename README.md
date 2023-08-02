@@ -22,23 +22,8 @@
 
 6. Run 
 
-``` .\image-builder.sh or .\image-builder.ps1 ```
+``` .\setup.sh or .\setup.ps1 ```
 
-7. Run docker-compose up
-
-## Networks 
-
-### Auth Services Docker Network
-1. TODO
-
-### ToDo Services Docker Network
-1. TODO
-
-### Postgres Services Docker Network
-1. TODO
-
-### Frontend Services Docker Network
-1. TODO
 
 ## Tasks
 #### Luganodes Major Requirements
@@ -54,9 +39,9 @@
 
 - [X] Create Authentication Mode (Microservice)
 
-- [ ] Create Frontend and Link with Backend
+- [X] Create Frontend and Link with Backend
 
-- [ ] Docker Compose Wrap Everything Together
+- [X] Docker Compose Wrap Everything Together
 
 #### Luganodes ToDo Requirements
 
